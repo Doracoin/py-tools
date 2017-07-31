@@ -16,37 +16,33 @@ down_dir = "." + os.path.sep + "bing_wallpaper"
 # 接口地址
 bingUrl = "".join(['http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=', str(days), '&mkt=zh-cn'])
 
-
-def chk_args():
-    if (len(sys.argv) > 0):
-        for i in range(0, len(sys.argv)):
-            if (i == len(sys.argv) - 1):
-                key = sys.argv[i]
-                value = ""
-            else:
-                key = sys.argv[i]
-                value = sys.argv[i + 1]
-            print "key: %s, value: %s" % (key, value)
-            if ("-d" == key):
-                days = value
-                bingUrl = "".join(
-                    ['http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=', str(days), '&mkt=zh-cn'])
-            if ("-t" == key):
-                time_out = int(value)
-            if ("-a" == key):
-                if ("yes" == str(value).lower() or "y" == str(value).lower()):
-                    all_px = True
-                else:
-                    all_px = False
-            if ("-p" == key):
-                down_dir = value
-            if (i == 1 and ("-h" == key or "-help" == key or "--help" == key)):
-                print "    -d    (number)   指定查询的天数, 最多只能查询到当天和过去7天的"
-                print "    -t    (number)   请求超时时间, 单位：秒"
-                print "    -a    (y/n, Y/N) 是否尝试下载所有分辨率的图片, 默认 yes"
-                print "    -p    (string)   指定图片保存路径, 注意你的系统的分隔符 '\\' or '/'"
-                print "    -h    显示帮助"
-                exit(0)
+for i in range(0, len(sys.argv)):
+    if (i == len(sys.argv) - 1):
+        key = sys.argv[i]
+        value = ""
+    else:
+        key = sys.argv[i]
+        value = sys.argv[i + 1]
+        # print "key: %s, value: %s" % (key, value)
+    if ("-d" == key):
+        days = value
+        bingUrl = "".join(['http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=', str(days), '&mkt=zh-cn'])
+    if ("-t" == key):
+        ime_out = int(value)
+    if ("-a" == key):
+        if ("yes" == str(value).lower() or "y" == str(value).lower()):
+            all_px = True
+        else:
+            all_px = False
+    if ("-p" == key):
+        down_dir = value
+    if (i < 2 and ("-h" == key or "-help" == key or "--help" == key)):
+        print "    -d    (number)   指定查询的天数, 最多只能查询到当天和过去7天的"
+        print "    -t    (number)   请求超时时间, 单位：秒"
+        print "    -a    (y/n, Y/N) 是否尝试下载所有分辨率的图片, 默认 yes"
+        print "    -p    (string)   指定图片保存路径, 注意你的系统的分隔符 '\\' or '/'"
+        print "    -h    显示帮助"
+        exit(0)
 
 
 def download_img(url):
@@ -92,14 +88,10 @@ def get_bing_wallpaper():
 
 
 if __name__ == '__main__':
-    # 检查命令行参数
-    chk_args()
-
     print "\nWelcome to use < Bing Wallpaper Downloader 1.0 >\n"
-    print "文件将会被下载到: ", (os.path.dirname(sys.argv[0]) + down_dir[1:len(down_dir)]).replace("/",os.path.sep) if down_dir.startswith(".") else down_dir
+    print "文件将会被下载到: ", down_dir
     print "是否尝试多分辨率: ", "是" if all_px == True else "否"
-    print "查询天数: ", days, "\n"
-    print os.path.dirname(sys.argv[0])
+    print "尝试查询天数: ", days, "\n"
 
     # 开始下载
     get_bing_wallpaper()
